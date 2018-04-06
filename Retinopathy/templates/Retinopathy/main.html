@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'Retinopathy/Bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'Retinopathy/Bootstrap/css/bootstrap-theme.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'Retinopathy/custum.css' %}">
+    <link rel="image" type="image" href="{% static 'Retinopathy/images/retinopathy.jpg' %}">
+    <title>Login</title>
+  </head>
+  <body>
+    <div class="login_bottom">
+      <div class="container" style="font-size:15px">
+        <div class="row"  style="margin-top:30px">
+          <div class="col-sm-5">
+            <center>
+              <form action="http://127.0.0.1:8000/store" method="POST" enctype='multipart/form-data'>
+                <div class="form-inline" style="margin-bottom:10px">
+                  <label for="enter_image" style="color:black;width:120px">Select the image</label>
+                  <label class="btn btn-default btn-file">Browse <input type="file" style="border-radius: 2px;" name = "image" required></label>
+                </div>
+                  <button type="submit" name="submit" class="btn btn-primary btn-md" style="border-radius: 5px;" aria-label="left-align">Check
+                    <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+                  </button>
+              </form>
+            </center>
+            <br><br><br>
+          </div>
+        </div>
+      </div>
+    </div>
+</html>

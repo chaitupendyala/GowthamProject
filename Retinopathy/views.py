@@ -1,12 +1,8 @@
 from django.shortcuts import render,HttpResponse, redirect
 from django.views.decorators.csrf import csrf_exempt
 from .models import Eye_Images
-import cv2
-import numpy as np
-import keras
-from keras.models import load_model
-
-model = load_model("/home/chaitanya/Desktop/DDR/DR_Two_Classes_recall_0.7759.h5")
+import subprocess
+import os
 
 def enter_image(request):
     return render(request,"Retinopathy/main.html",{})
@@ -17,21 +13,13 @@ def store_image(request):
         u = Eye_Images(image = request.FILES['image'])
         u.save()
         return_val = evaluate(u.id)
-        print str(return_val[0]+" "+return_val[1])
-        return HttpResponse("<h1>Class 1 resemblence is :"+str(return_val[0])+"<br/>"+"Class 2 resemblence is :"+str(return_val[1]))
+        vals = return_val.split(" ")
+        print vals
+        return HttpResponse("<h1>Class 1 resemblence is :"+str(float(vals[1])*100)+"<br/>"+"Class 2 resemblence is :"+str(float(vals[3].split("]")[0])*100))
     else:
         return redirect("/check")
 
 def evaluate(id_of_object):
-    image_path = str(Eye_Images.objects.get(id = id_of_object).image.path)
-    print image_path
-    image = cv2.imread(image_path)
-    if image is not None:
-        print "hello"
-        image = cv2.resize(image,(256,256))
-        image = image / 255
-        image = np.expand_dims(image, axis=0)
-        score = model.predict(image)
-        return score*100
-    else:
-        return [0.0,0.0]
+    process = subprocess.Popen(['python', os.getcwd()+'/Retinopathy/trur_eval.py', str(Eye_Images.objects.get(id = id_of_object).image.path)], stdout=subprocess.PIPE)
+    out, err = process.communicate()
+    return out
